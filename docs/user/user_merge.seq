@@ -1,0 +1,17 @@
+http://www.websequencediagrams.com/
+
+title Set Twitter Settings
+
+TwitterUserService->TwitterUserService: set_twitter_user(user_id, twitter_id)
+TwitterUserService->TwitterUserService: find_twitter_user(twitter_id_hash)
+TwitterUserService->TwitterUserManager: set_internal_user(twitter_id_hash, user_id)
+TwitterUserService->LogManager: delete_profile_logs(old_user_id)
+TwitterUserService->LogManager: update_user_id(old_user_id, user_id)
+TwitterUserService->FinalLogManager: delete_profile_final_logs(old_user_id)
+TwitterUserService->FinalLogManager: update_user_id(old_user_id, user_id)
+TwitterUserService->AccountService: delete_account(old_user_id)
+AccountService->UserService: remove_user(user_id)
+UserService->UserManager: delete_user(user_id)
+AccountService->ProfileService: remove_profile_by_user_id(user_id)
+ProfileService->ProfileManager: remove_profile_by_user_id(user_id)
+TwitterUserService->oper_queue_publisher: publish(oper)

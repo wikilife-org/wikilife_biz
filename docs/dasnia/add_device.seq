@@ -1,0 +1,12 @@
+http://www.websequencediagrams.com/
+
+title add device
+
+dasnia[REST]->DasniaService: add_service(user_id, code)
+DasniaService->UserSettingsManager: save_foo(user_id, code)
+DasniaService->Singly[REST]: do_service_auth(app_key, code)
+DasniaService->Singly[REST]: api.singly.com/oauth/access_token(code)
+DasniaService->UserSettingsManager: save_foo(user_id, access_token)
+DasniaService->Singly[REST]: api.singly.com/foo/get_user_historical_data(access_token)
+DasniaService->SinglyParser:historical_data_to_raw_logs(historical_data)
+DasniaService->LogService: add_logs(historical_raw_logs)
