@@ -8,3 +8,4 @@ class BizDAOs(object):
     generic_global_log_stats_dao = None
     user_option_last_log_dao = None
     aggregation_dao = None
+    aggregation_node_dao = None

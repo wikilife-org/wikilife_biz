@@ -23,6 +23,7 @@ class StatServiceBuilder(object):
         daos.log_dao = self._dao_bldr.build_log_dao()
         daos.generic_dao = self._dao_bldr.build_generic_dao()
         daos.aggregation_dao = self._dao_bldr.build_aggregation_dao()
+        daos.aggregation_node_dao = self._dao_bldr.build_aggregation_node_dao()
         daos.user_option_last_log_dao = self._dao_bldr.build_user_option_last_log_dao()
         return daos
 

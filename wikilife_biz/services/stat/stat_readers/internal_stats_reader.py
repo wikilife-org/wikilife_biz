@@ -29,7 +29,7 @@ class InternalStatsReader(BaseStatReader):
         """
 
         user_dao = self._daos.user_dao
-        aggregation_dao = self._daos.aggregation_dao
+        aggregation_dao = self._daos.aggregation_node_dao
 
         date_to = DateUtils.create_datetime(current_utc.year, current_utc.month, current_utc.day)
         date_from = DateUtils.add_days(date_to, -1)
@@ -69,7 +69,7 @@ class InternalStatsReader(BaseStatReader):
         LV_NODE_ID = 1
 
         meta_dao = self._daos.meta_dao
-        aggregation_dao = self._daos.aggregation_dao
+        aggregation_dao = self._daos.aggregation_node_dao
 
         date_to = DateUtils.create_datetime(current_utc.year, current_utc.month, current_utc.day)
         date_from = DateUtils.add_days(date_to, -1)
