@@ -82,10 +82,10 @@ class InternalStatsReader(BaseStatReader):
             data.append(item)
             node_id_map[node._id] = item
 
-        for item in aggregation_dao.count_logged_nodes(node_id_map.keys(), date_from, date_to):
+        for item in aggregation_dao.count_logged_nodes(node_ids=node_id_map.keys(), from_date=date_from, to_date=date_to):
             node_id_map[int(item["_id"])]["yesterday"] = int(item["value"])
 
-        for item in aggregation_dao.count_logged_nodes(node_id_map.keys()):
+        for item in aggregation_dao.count_logged_nodes(node_ids=node_id_map.keys()):
             node_id_map[int(item["_id"])]["total"] = int(item["value"])
 
         return data
