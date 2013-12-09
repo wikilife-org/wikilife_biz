@@ -29,8 +29,7 @@ class ProfileService(object):
 
             for k in self._lvs:
                 meta_node = self._meta_dao.get_node_by_id(self._lvs[k]["nodeId"])
-                try: self._lvs[k]["node_name"] = meta_node.name
-                except: pass 
+                self._lvs[k]["node_name"] = meta_node.name
         except Exception, e:
             raise ProfileServiceException("Initialization error: %s" %e)
 
@@ -81,8 +80,9 @@ class ProfileService(object):
         dt = DateUtils.get_datetime_local(user_tz_name)
         dt = DateUtils.add_seconds(dt, -60 * 5)
         start = DateFormatter.to_datetime(dt)
+        end = start
         text = "%s  %s" % (lv["node_name"], log_value)
         log_node = LogCreator.create_log_node(lv["nodeId"], lv["metricId"], log_value)
         nodes = [log_node]
-        log = LogCreator.create_log(user_id, start, start, text, source, nodes)
+        log = LogCreator.create_log(user_id, start, end, text, source, nodes)
         return log
