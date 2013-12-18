@@ -11,10 +11,8 @@ READERS = [
     (102, "wikilife_biz.services.stat.stat_readers.work_experience_reader.WorkExperienceReader"),
     (103, "wikilife_biz.services.stat.stat_readers.social_reader.SocialReader"),
     (104, "wikilife_biz.services.stat.stat_readers.was2.exercise.TimesPerWeekReader"),
-    (105, "wikilife_biz.services.stat.stat_readers.health.mostpopular.GlobalComplaintsReader"),
-    (106, "wikilife_biz.services.stat.stat_readers.health.mostpopular.UserComplaintsReader"),
-    (107, "wikilife_biz.services.stat.stat_readers.health.mostpopular.GlobalConditionsReader"),
-    (108, "wikilife_biz.services.stat.stat_readers.health.mostpopular.UserConditionsReader"),
+    (105, "wikilife_biz.services.stat.stat_readers.health.mostpopular.ComplaintsReader"),
+    (107, "wikilife_biz.services.stat.stat_readers.health.mostpopular.ConditionsReader"),
     (200, "wikilife_biz.services.stat.stat_readers.was2.user_aggregated_logs_reader.UserAggregatedLogsReader"),
     (1000, "wikilife_biz.services.stat.stat_readers.internal_stats_reader.InternalStatsReader")
 ]

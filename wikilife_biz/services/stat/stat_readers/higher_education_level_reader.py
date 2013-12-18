@@ -10,7 +10,7 @@ class HigherEducationLevelReader(UserOptionLastLogReader):
 
     def read_stat(self):
         node_id = 2
-        metric_id = 216809
+        metric_id = 278326
         user_id = ""
         from_date = None
         to_date = None
