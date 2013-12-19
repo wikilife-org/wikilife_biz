@@ -2,6 +2,7 @@
 
 from wikilife_biz.services.stat.stat_readers.base_stat_reader import BaseStatReader
 from wikilife_utils.date_utils import DateUtils
+from operator import itemgetter
 
 
 class BaseMostPopularReader(BaseStatReader):
@@ -26,6 +27,8 @@ class BaseMostPopularReader(BaseStatReader):
             count = node_count_map[n._id] if n._id in node_count_map else 0  
             per = round(count*100.0/total, 4)
             nodes.append({"id": n._id, "name": n.name, "per": per})
+
+        nodes.sort(key=itemgetter("per"), reverse=True)
 
         return {
          "data": nodes
