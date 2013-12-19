@@ -23,12 +23,15 @@ class BaseMostPopularReader(BaseStatReader):
         node_ids = node_count_map.keys() if user_id else self.NODE_IDS
         meta_nodes = self._daos.meta_dao.get_nodes_by_ids(node_ids)
 
+        if total==0:
+            total = 1
+
         for n in meta_nodes:
             count = node_count_map[n._id] if n._id in node_count_map else 0  
             per = round(count*100.0/total, 4)
-            nodes.append({"id": n._id, "name": n.name, "per": per})
+            nodes.append({"id": n._id, "name": n.name, "percentage": per})
 
-        nodes.sort(key=itemgetter("per"), reverse=True)
+        nodes.sort(key=itemgetter("percentage"), reverse=True)
 
         return {
          "data": nodes
@@ -40,5 +43,35 @@ class ComplaintsReader(BaseMostPopularReader):
 
 
 class ConditionsReader(BaseMostPopularReader):
-    NODE_IDS = []
+    NODE_IDS = [3194, 3196, 3199, 3198, 3202, 26677, 3201, 26779, 26779, 38883, 27155, 274351, 27179, 3205, 27217, 27283, 34644, 27667, 33093, 28167, 28169, 28421, 28781, 38210, 28643, 28325, 28921, 28963, 28965, 28967, 35736, 29073, 39755, 29737, 3204, 30021, 31211, 29999, 30391, 31595, 37866, 31727, 3208, 28801, 27215, 3182, 30413, 31991, 30513, 40915, 30007, 32171, 36940, 31945, 3207, 38218, 41357, 40395, 28687, 37092, 33229, 34662, 34708, 35254, 35354, 38290, 38646, 38897, 38981, 39017, 3210, 3213, 39509, 40403, 39929, 31017, 36706, 40565, 40873, 40887, 3215, 41325, 28283, 29929, 37668, 29043, 39471, 273780, 31705]
+    CATEG_NODE_IDS = {
+        #Cancer
+        3194: [33389, 33405, 33423, 33427, 33557, 33455, 33467, 33679, 33711, 34055, 33745, 32075, 33135, 33487, 33607, 33431, 33299, 33641, 33667, 34704, 34764, 35222, 33781, 33675, 33939, 33971, 33797, 3225, 33719, 33625, 34071, 33817, 33825, 33827],
 
+        #Respiratory diseases
+        3196: [37202, 27573, 28201, 40961, 28881, 39061, 30881, 38927],
+
+        #Diabetes
+        3199: [40993, 32581, 35224],
+
+        #Heart and cardiovascular
+        3198: [27179, 27365, 27453, 27457, 27459, 27461, 29343, 27615, 40339, 27845, 28469, 28645, 27593, 30101, 30945, 34560, 26911, 35734, 31933, 28441, 30915, 31079, 38927, 37422, 35290, 34558, 35294, 36770, 35438, 3221, 38264, 3223, 39087, 36154, 39093, 39095, 39097, 37242, 39443, 39437, 39439, 39441, 39457, 34554, 39461, 34550, 37820, 40701, 40695, 40697, 40699, 3227, 3229, 35296, 29427, 35300, 35302, 35304, 41241, 30867],
+
+        #HIV
+        3202: [41019, 3217]
+    }
+
+    def read_stat(self, user_id=None):
+        r = BaseMostPopularReader.read_stat(self, user_id=user_id)
+
+        for node in r["data"]:
+            node["types"] = []
+
+            if node["id"] in self.CATEG_NODE_IDS:
+                sub_node_ids = self.CATEG_NODE_IDS[node["id"]]
+                meta_nodes = self._daos.meta_dao.get_nodes_by_ids(sub_node_ids)
+
+                for meta_node in meta_nodes:
+                    node["types"].append({"id": meta_node._id, "name": meta_node.name})
+
+        return r
