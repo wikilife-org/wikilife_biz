@@ -14,6 +14,7 @@ READERS = [
     (105, "wikilife_biz.services.stat.stat_readers.mostpopular.ComplaintsReader"),
     (107, "wikilife_biz.services.stat.stat_readers.mostpopular.ConditionsReader"),
     (109, "wikilife_biz.services.stat.stat_readers.mostpopular.MoodsReader"),
+    (110, "wikilife_biz.services.stat.stat_readers.was2.global_aggregated_logs_by_day_reader.GlobalAggregatedLogsByDayReader"),
     (200, "wikilife_biz.services.stat.stat_readers.was2.user_aggregated_logs_reader.UserAggregatedLogsReader"),
     (1000, "wikilife_biz.services.stat.stat_readers.internal_stats_reader.InternalStatsReader")
 ]
