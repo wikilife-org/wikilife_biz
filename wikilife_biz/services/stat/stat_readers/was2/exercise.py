@@ -9,18 +9,23 @@ class TimesPerWeekReader(BaseStatReader):
 
     def read_stat(self, node_id, from_date, to_date):
 
-        items = self._daos.aggregation_dao.get_node(node_id, from_date, to_date)
+        items = self._daos.aggregation_dao.get_times_group_by_user(node_id, from_date, to_date)
 
         day_avg_sum = float(0)
-
+        deleted_items = 0
+        tpw_avg = 0
+        
         if len(items)>0:
             for item in items:
-                day_avg_sum += item["sum"] / item["count"]
+                print item
+                if item["value"]:
+                    day_avg_sum += item["value"]
+                else:
+                    deleted_items = deleted_items + 1
 
-            avg = day_avg_sum / len(items) 
+            if day_avg_sum:
+                tpw_avg = day_avg_sum / (len(items) - deleted_items)
 
-        else:
-            tpw_avg = 0 
 
         return {
          "nodeId": node_id,
