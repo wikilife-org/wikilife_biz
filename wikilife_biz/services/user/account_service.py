@@ -6,6 +6,7 @@ from wikilife_utils.formatters.date_formatter import DateFormatter
 
 DEFAULT_GENDER = None
 DEFAULT_BIRTHDATE = "1970-01-01 00:00:00 -0000"
+DEFAULT_TZ = "US/Central"
 DEFAULT_HEIGHT = 1.0
 DEFAULT_WEIGHT = 1.0
 DEFAULT_COUNTRY = None
@@ -71,7 +72,7 @@ class AccountService(object):
         """
 
         try:
-            user_tz_name = str(self._get_dto_field(account_dto, "timezone", None))
+            user_tz_name = str(self._get_dto_field(account_dto, "timezone", DEFAULT_TZ))
             pin = self._get_dto_field(account_dto, "pin", None)
             user_name = self._get_dto_field(account_dto, "userName", None)
             gender = self._get_dto_field(account_dto, "gender", DEFAULT_GENDER)
