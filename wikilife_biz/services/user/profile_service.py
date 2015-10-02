@@ -70,6 +70,27 @@ class ProfileService(object):
         except LogServiceException, e: 
             raise ProfileServiceException(e)
 
+    def update_profile(self, user_id, user_tz_name, source, country=None, region=None, city=None):
+        """
+        Async
+        """
+        logs = []
+
+        if country:
+            logs.append(self._create_log(self._lvs["country"], user_id, user_tz_name, country, source))
+
+        if region:
+            logs.append(self._create_log(self._lvs["region"], user_id, user_tz_name, region, source))
+
+        if city:
+            logs.append(self._create_log(self._lvs["city"], user_id, user_tz_name, city, source))
+
+        try:
+            self._log_srv.add_logs(logs)
+
+        except LogServiceException, e: 
+            raise ProfileServiceException(e)
+
     def get_profile_by_user_id(self, user_id):
         return self._profile_dao.get_profile_by_user_id(user_id)
 
