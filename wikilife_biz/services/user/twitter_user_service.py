@@ -19,7 +19,7 @@ class TwitterUserService(object):
     INTERNAL_ID_FIELD = "internal_id"
     TWITTER_ID_HASH_FIELD = "twitter_id_hash"
 
-    def __init__(self, logger, twitter_user_dao, twitter_config_dao, log_dao, final_log_dao, profile_dao, account_service, twitter_search_location, oper_queue_publisher):
+    def __init__(self, logger, twitter_user_dao, twitter_config_dao, log_dao, final_log_dao, profile_dao, account_service, twitter_search_location, user_dao, oper_queue_publisher):
         self._logger = logger
         self._twitter_user_dao = twitter_user_dao
         self._twitter_config_dao = twitter_config_dao
@@ -27,6 +27,7 @@ class TwitterUserService(object):
         self._final_log_dao = final_log_dao
         self._account_srv = account_service
         self._profile_dao = profile_dao
+        self._user_dao = user_dao
         self._oper_queue_publisher = oper_queue_publisher
         self._twitter_search_location = twitter_search_location
 
@@ -64,34 +65,50 @@ class TwitterUserService(object):
         },
         """
         geolocator = Nominatim()
-        
+
         if not (profile.get("city", None) or profile.get("region", None) \
                     or profile.get("country", None)):
             filter = TwitterSearchFilter(user_id=twitter_id)
             result = self._twitter_search_location.search(filter)
-            
+
             result_items = result
+            print result_items
             for item in result_items:
                 if item.get("geo", None):
                     geo_str = "{0}, {1}".format(item["geo"]["coordinates"][0], item["geo"]["coordinates"][1])
                     location = geolocator.reverse(geo_str)
-                    
+
                     city = location.raw["address"].get("city", None)
                     region = location.raw["address"]["state"]
                     country = location.raw["address"]["country"]
-                    
+
                     if region in LOCATION_MAP_COUNT:
                         LOCATION_MAP_COUNT[region]  = LOCATION_MAP_COUNT[region] + 1
                     else:
                         LOCATION_MAP_COUNT[region] = 1
                         LOCATION_MAP[region] = {"region": region, "city":city, "country": country}
-                
+
             if LOCATION_MAP_COUNT:
                 d_sorted_by_value = list(OrderedDict(sorted(LOCATION_MAP_COUNT.items(), key=lambda x: x[1])))
                 d_sorted_by_value.reverse()
                 region = d_sorted_by_value[0]
                 self._logger.info(LOCATION_MAP[region])
                 self._account_srv.update_profile(str(twitter_user["internal_id"]), "UTC", "AccountService", LOCATION_MAP[region]["country"], LOCATION_MAP[region]["region"] ,LOCATION_MAP[region]["city"] )
+
+
+    def get_twitter_users_with_no_location(self, limit=300):
+        profiles = self._profile_dao.get_profiles_with_no_location(limit)
+        twitter_users = []
+        for profile in profiles:
+            user = self._user_dao.get_user_by_id(profile["userId"])
+            if "tw_" in user["userName"]:
+                #Get TwitterUse
+                
+                internal_twitter_user = self._twitter_user_dao.find_twitter_user_by_id(user["userId"])
+                twitter_user = self._twitter_user_dao._db.twitter_users_hash_tmp.find_one({"twitter_id_hash": internal_twitter_user["twitter_id_hash"]})
+                twitter_users.append((internal_twitter_user, twitter_user["twitter_id"]))
+                
+        return twitter_users
 
 
     def find_twitter_user(self, twitter_id_hash):

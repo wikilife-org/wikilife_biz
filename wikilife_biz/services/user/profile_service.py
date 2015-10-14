@@ -90,6 +90,9 @@ class ProfileService(object):
 
         except LogServiceException, e: 
             raise ProfileServiceException(e)
+    
+    def get_profiles_with_no_location(self, limit=300):
+        return self._profile_dao.get_profiles_with_no_location(limit)
 
     def get_profile_by_user_id(self, user_id):
         return self._profile_dao.get_profile_by_user_id(user_id)

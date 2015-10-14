@@ -37,7 +37,8 @@ class UserServiceBuilder(object):
         oper_queue_publisher.open_conn()
         profile_dao = self._dao_bldr.build_profile_dao()
         twitter_search_location= TwitterUserLocation()
-        return TwitterUserService(self._logger, twitter_user_dao, twitter_config_dao, log_dao, final_log_dao, profile_dao, account_srv, twitter_search_location, oper_queue_publisher)
+        user_dao = self._dao_bldr.build_user_dao()
+        return TwitterUserService(self._logger, twitter_user_dao, twitter_config_dao, log_dao, final_log_dao, profile_dao, account_srv, twitter_search_location, user_dao, oper_queue_publisher)
 
     def build_account_service(self, log_srv):
         user_srv = self.build_user_service()

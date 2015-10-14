@@ -252,11 +252,12 @@ class TimelineService(object):
 
         items, total = self._timeline_mgr.get_user_timeline_by_update_time_after(user_id, from_update_datetime_utc, MAX_SYNC_ITEMS)
 
-        if len(items) > 0:
+        """if len(items) > 0:
             sync_datetime_utc = items[-1][UPDATE_DATETIME_UTC_FIELD]
         else:
-            sync_datetime_utc = client_last_sync_datetime_utc
-
+            sync_datetime_utc = client_last_sync_datetime_utc"""
+        
+        sync_datetime_utc = client_last_sync_datetime_utc
         dto = {}
         dto["items"] = items
         dto["sync_datetime_utc"] = sync_datetime_utc
