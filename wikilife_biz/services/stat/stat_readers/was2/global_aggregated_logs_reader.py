@@ -34,5 +34,5 @@ class GlobalAggregatedLogsReader(BaseStatReader):
         return items
 
     def _read_options(self, node_id, metric_id, from_date, to_date):
-        #TODO definition pending
-        raise NotImplementedError()
+        items = self._daos.aggregation_dao.get_life_variable(node_id, metric_id, from_date, to_date)
+        return items
