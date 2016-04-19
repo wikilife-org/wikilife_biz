@@ -109,7 +109,7 @@ class MetaService(object):
         for item in nodes_page_dto["items"]:
             node_id = item["id"]
             #item["parentIds"] = self._meta_dao.get_parent_ids_by_id(node_id)
-            #item["is"] = self._converter.meta_node_list_to_dto(self._meta_dao.get_parent_nodes_by_id(node_id))
+            item["is"] = self._converter.meta_node_list_to_dto(self._meta_dao.get_parent_nodes_by_id(node_id))
             #item["has"] = self._converter.meta_node_list_to_dto(self._meta_dao.get_component_nodes(node_id))
             #item["measuredBy"] = self._converter.metric_node_list_to_dto(self._meta_dao.get_node_metrics(node_id))
             #item["measuredByDefault"] = self._converter.metric_node_list_to_dto(self._meta_dao.get_default_metrics(node_id))
