@@ -5,6 +5,35 @@ from wikilife_biz.services.stat.stat_readers.base_stat_reader import \
 from wikilife_utils.date_utils import DateUtils
 
 
+
+class InternalUserReader(BaseStatReader):
+
+    def read_stat(self):
+
+        data = {}
+        data["users"] = self._get_global_user_stats()
+
+        return {
+            "data": data
+        }
+        
+    def _get_global_user_stats(self):
+        """
+  
+        """
+
+        user_dao = self._daos.user_dao
+
+
+        total_human_users = user_dao.count_users(auto=False)
+        total_auto_users = user_dao.count_users(auto=True)
+        total_users = total_human_users + total_auto_users
+
+
+        data = {}
+        data["total"] = total_users
+        return data
+    
 class InternalStatsReader(BaseStatReader):
 
     def read_stat(self):
