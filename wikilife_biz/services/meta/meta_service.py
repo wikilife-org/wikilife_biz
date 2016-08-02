@@ -39,6 +39,12 @@ class MetaService(object):
         dto = self._converter.metric_node_to_dto(metric)
         dto["measuring"] = self._converter.meta_node_list_to_dto(self._meta_dao.get_nodes_measured_by(metric_id))
         return dto
+    
+    def get_metric_by_orig_id(self, metric_id):
+        metric = get_metric_by_orig_id(metric_id)
+        dto = self._converter.metric_node_to_dto(metric)
+        dto["measuring"] = self._converter.meta_node_list_to_dto(self._meta_dao.get_nodes_measured_by(metric_id))
+        return dto
 
     def get_node_by_orig_id(self, node_orig_id):
         node = self._meta_dao.get_node_by_orig_id(node_orig_id)
