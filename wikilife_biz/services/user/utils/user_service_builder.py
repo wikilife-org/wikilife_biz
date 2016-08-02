@@ -8,6 +8,7 @@ from wikilife_biz.services.user.timeline_service import TimelineService
 from wikilife_biz.services.user.twitter_user_service import TwitterUserService
 from wikilife_biz.services.user.user_service import UserService
 from wikilife_utils.queue_publisher import QueuePublisher
+from wikilife_biz.services.twitter.delegates.twitter_search_user_delegate import TwitterUserLocation
 
 
 class UserServiceBuilder(object):
@@ -34,7 +35,10 @@ class UserServiceBuilder(object):
         account_srv = self.build_account_service(log_srv)
         oper_queue_publisher = QueuePublisher(self._settings["QUEUE_OPERS"])
         oper_queue_publisher.open_conn()
-        return TwitterUserService(self._logger, twitter_user_dao, twitter_config_dao, log_dao, final_log_dao, account_srv, oper_queue_publisher)
+        profile_dao = self._dao_bldr.build_profile_dao()
+        twitter_search_location= TwitterUserLocation()
+        user_dao = self._dao_bldr.build_user_dao()
+        return TwitterUserService(self._logger, twitter_user_dao, twitter_config_dao, log_dao, final_log_dao, profile_dao, account_srv, twitter_search_location, user_dao, oper_queue_publisher)
 
     def build_account_service(self, log_srv):
         user_srv = self.build_user_service()

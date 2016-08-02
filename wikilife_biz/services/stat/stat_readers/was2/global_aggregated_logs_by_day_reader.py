@@ -18,7 +18,7 @@ class GlobalAggregatedLogsByDayReader(BaseStatReader):
             data = self._read_options(metric_id, from_date, to_date)
         result = []
         for d in data:
-            result.append({"date":DateFormatter.to_date(d["_id"]), "avg":d["value"]}) 
+            result.append({"date":DateFormatter.to_date(d["_id"]), "avg":d["value"]["avg"], "sum":d["value"]["sum"], "entries":d["value"]["entries"]}) 
         return {
          #"nodeId": node_id,
          "metricId": metric_id,
